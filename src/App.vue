@@ -1,10 +1,11 @@
 <script setup>
 import { onMounted, ref } from "vue";
+import { RouterLink, useRoute } from "vue-router";
 import useBlogs from "../src/composables/blogApi";
-import { RouterView } from "vue-router";
 
 const { blogs, error, statusCode, getAllBlogs } = useBlogs();
 const loading = ref(true);
+const $route = useRoute();
 
 onMounted(async () => {
   try {
@@ -46,6 +47,11 @@ onMounted(async () => {
       <ul class="navbar-nav">
         <li class="nav-item">
           <RouterLink :to="{ name: 'home' }" class="nav-link js-scroll-trigger"
+            >Home</RouterLink
+          >
+        </li>
+        <li class="nav-item">
+          <RouterLink :to="{ name: 'blog' }" class="nav-link js-scroll-trigger"
             >Blog</RouterLink
           >
         </li>
@@ -53,26 +59,27 @@ onMounted(async () => {
           <a class="nav-link js-scroll-trigger" href="#"><hr /></a>
         </li>
 
+        <div v-if="$route.name === 'blog' || $route.name === 'view'">
+          <ul class="navbar-nav" v-if="blogs.length > 0">
+            <li v-for="blog in blogs" :key="blog.id">
+              <RouterLink
+                :to="{ name: 'view', params: { id: blog.id } }"
+                class="nav-link"
+                >{{ blog.title }}</RouterLink
+              >
+            </li>
+          </ul>
+        </div>
+
         <!-- Loading state -->
         <li v-if="loading" class="nav-item">Loading...</li>
 
         <!-- Error state -->
         <li v-if="error" class="nav-item">Error fetching blogs: {{ error }}</li>
-
-        <!-- Display blogs when not loading and no error -->
-        <ul class="navbar-nav" v-if="blogs.length > 0">
-          <li v-for="blog in blogs" :key="blog.id">
-            <RouterLink
-              :to="{ name: 'view', params: { id: blog.id } }"
-              class="nav-link"
-              >{{ blog.title }}</RouterLink
-            >
-            <!-- <a class="nav-link" :href="'#' + blog.id">{{ blog.title }}</a> -->
-          </li>
-        </ul>
       </ul>
     </div>
   </nav>
+
   <div class="container-fluid p-0">
     <RouterView />
   </div>

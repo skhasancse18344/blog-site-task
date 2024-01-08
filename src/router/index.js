@@ -1,5 +1,6 @@
 import { createRouter, createWebHistory } from "vue-router";
-import Home from "../components/HomePage.vue";
+import Blog from "../components/BlogPage.vue";
+import Home from "../components/Home.vue";
 import View from "../components/ViewBlog.vue";
 import NotFound from "../views/NotFound.vue";
 
@@ -8,6 +9,11 @@ const routes = [
     path: "/",
     name: "home",
     component: Home,
+  },
+  {
+    path: "/blog",
+    name: "blog",
+    component: Blog,
   },
   {
     path: "/view/:id",
