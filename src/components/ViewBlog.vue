@@ -92,12 +92,16 @@ const deleteComment = async (commentId) => {
               {{ singleBlog[0]?.title }} {{ singleBlog[0]?.id }}
             </h3>
             <div class="subheading mb-3">{{ singleBlog[0]?.created_by }}</div>
-            <p v-for="(single, index) in singleBlog[0]?.all_blogs">
+            <p
+              v-for="(single, index) in singleBlog[0]?.all_blogs"
+              :key="single.id"
+            >
               {{ singleBlog[0]?.all_blogs[index].blog_detail }}
             </p>
           </div>
           <div
             v-for="(single, index) in singleBlog[0]?.all_blogs"
+            :key="single.id"
             class="flex-shrink-0"
           >
             <span class="text-primary">{{

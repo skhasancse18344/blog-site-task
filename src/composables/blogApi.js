@@ -4,10 +4,26 @@ import axios from "axios";
 export default function useBlogs() {
   const url = "http://vue-test.gingerbd.com/api/";
   const blogs = ref([]);
+  const allBlogs = ref([]);
   const singleBlog = ref([]);
   const error = ref(null);
   const loading = ref(false);
   const statusCode = ref(null);
+
+  //Get Blogs Data
+  const getBlogsData = async () => {
+    loading.value = true;
+    error.value = null;
+    try {
+      const res = await axios(url + "all-blogs");
+
+      allBlogs.value = res.data;
+    } catch (err) {
+      error.value = err;
+    } finally {
+      loading.value = false;
+    }
+  };
 
   // Get All Blogs Data
   const getAllBlogs = async () => {
@@ -62,6 +78,7 @@ export default function useBlogs() {
   };
 
   return {
+    allBlogs,
     statusCode,
     blogs,
     singleBlog,
@@ -71,5 +88,6 @@ export default function useBlogs() {
     getAllBlogs,
     postBlog,
     destroyComment,
+    getBlogsData,
   };
 }
